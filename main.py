@@ -8,7 +8,7 @@ from routes import (
     rutas_tipos_dispositivos, 
     rutas_dispositivos,
     rutas_bocina,
-    ruta_vvf  # 👈 NUEVO IMPORT
+    ruta_vvf  
 )
 
 app = FastAPI(
