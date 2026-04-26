@@ -2,10 +2,10 @@ import pymysql
 
 def get_connection():
     return pymysql.connect(
-        host="caboose.proxy.rlwy.net",
-        port=35240,
+        host="shuttle.proxy.rlwy.net",
+        port=28605,
         user="root",
-        password="BUOaiJaLrBhLNWhNSFwAPALuJmzxZQby",
+        password="NUGzJSssSarOXeLaNvcLhnYNKZEiNBCa",
         database="railway",
         cursorclass=pymysql.cursors.DictCursor
     )
