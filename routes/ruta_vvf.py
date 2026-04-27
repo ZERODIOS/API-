@@ -2,23 +2,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional, Dict
 from datetime import datetime
-import paho.mqtt.client as mqtt_client
-import json
 
-MQTT_HOST = "397a038dc17d4fe8b367995b006a008d.s1.eu.hivemq.cloud"
-MQTT_PORT = 8883
-MQTT_USER = "SAUL34"
-MQTT_PASS = "T28e05K03"
-MQTT_TOPIC = "aura/comandos"
-
-def publicar_mqtt(accion: str):
-    client = mqtt_client.Client()
-    client.username_pw_set(MQTT_USER, MQTT_PASS)
-    client.tls_set(tls_version=2)
-    client.connect(MQTT_HOST, MQTT_PORT)
-    payload = json.dumps({"accion": accion})
-    client.publish(MQTT_TOPIC, payload)
-    client.disconnect()
 
 router = APIRouter(prefix="/api", tags=["Control de Dispositivos"])
 
@@ -48,7 +32,7 @@ class EstadoDispositivo(BaseModel):
 @router.post("/ventilador/on")
 async def ventilador_on(dispositivo_id: str = "ESP32_AURA_01"):
     """🌀 Encender ventilador (modo manual)"""
-    publicar_mqtt("VENTILADOR_ON")
+    
     if dispositivo_id not in comandos_pendientes:
         comandos_pendientes[dispositivo_id] = []
     
@@ -66,7 +50,7 @@ async def ventilador_on(dispositivo_id: str = "ESP32_AURA_01"):
 @router.post("/ventilador/off")
 async def ventilador_off(dispositivo_id: str = "ESP32_AURA_01"):
     """🌀 Apagar ventilador (modo manual)"""
-    publicar_mqtt("VENTILADOR_OFF")
+    
     if dispositivo_id not in comandos_pendientes:
         comandos_pendientes[dispositivo_id] = []
     
@@ -87,7 +71,7 @@ async def ventilador_off(dispositivo_id: str = "ESP32_AURA_01"):
 @router.post("/foco/on")
 async def foco_on(dispositivo_id: str = "ESP32_AURA_01"):
     """💡 Encender foco (modo manual)"""
-    publicar_mqtt("FOCO_ON")
+    
     if dispositivo_id not in comandos_pendientes:
         comandos_pendientes[dispositivo_id] = []
     
@@ -105,7 +89,7 @@ async def foco_on(dispositivo_id: str = "ESP32_AURA_01"):
 @router.post("/foco/off")
 async def foco_off(dispositivo_id: str = "ESP32_AURA_01"):
     """💡 Apagar foco (modo manual)"""
-    publicar_mqtt("FOCO_OFF")
+
     if dispositivo_id not in comandos_pendientes:
         comandos_pendientes[dispositivo_id] = []
     
@@ -153,7 +137,7 @@ async def foco_intensidad(intensidad: int, dispositivo_id: str = "ESP32_AURA_01"
 @router.post("/modo")
 async def cambiar_modo(automatico: bool, dispositivo_id: str = "ESP32_AURA_01"):
     """🔄 Cambiar entre modo manual y automático"""
-    publicar_mqtt("MODO_AUTOMATICO" if automatico else "MODO_MANUAL")
+    
     if dispositivo_id not in comandos_pendientes:
         comandos_pendientes[dispositivo_id] = []
     
@@ -170,11 +154,6 @@ async def cambiar_modo(automatico: bool, dispositivo_id: str = "ESP32_AURA_01"):
     }
 
 
-@router.post("/modo/liberar")
-async def liberar_modo_manual(dispositivo_id: str = "ESP32_AURA_01"):
-    """🔓 Libera el bloqueo manual y vuelve a automático"""
-    publicar_mqtt("MODO_AUTOMATICO_FORZADO")
-    return {"status": "ok", "modo": "automatico"}
 
 
 
