@@ -169,6 +169,15 @@ async def cambiar_modo(automatico: bool, dispositivo_id: str = "ESP32_AURA_01"):
         "dispositivo": dispositivo_id
     }
 
+
+@router.post("/modo/liberar")
+async def liberar_modo_manual(dispositivo_id: str = "ESP32_AURA_01"):
+    """🔓 Libera el bloqueo manual y vuelve a automático"""
+    publicar_mqtt("MODO_AUTOMATICO_FORZADO")
+    return {"status": "ok", "modo": "automatico"}
+
+
+
 # ========================================
 # 📊 ENDPOINTS PARA ESP32 (Cliente)
 # ========================================
