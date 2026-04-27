@@ -14,7 +14,7 @@ MQTT_TOPIC = "aura/comandos"
 def publicar_mqtt(accion: str):
     client = mqtt_client.Client()
     client.username_pw_set(MQTT_USER, MQTT_PASS)
-    client.tls_set()
+    client.tls_set(tls_version=2)
     client.connect(MQTT_HOST, MQTT_PORT)
     payload = json.dumps({"accion": accion})
     client.publish(MQTT_TOPIC, payload)
