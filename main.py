@@ -8,7 +8,8 @@ from routes import (
     rutas_tipos_dispositivos, 
     rutas_dispositivos,
     rutas_bocina,
-    ruta_vvf  
+    ruta_vvf,
+    rutas_actuadores
 )
 
 app = FastAPI(
@@ -39,6 +40,7 @@ app.include_router(rutas_tipos_dispositivos.router)
 app.include_router(rutas_dispositivos.router)
 app.include_router(rutas_bocina.router)  # 👈 NUEVO ROUTER
 app.include_router(ruta_vvf.router)
+app.include_router(rutas_actuadores.router)
 # ========================================
 # RUTA PRINCIPAL
 # ========================================
